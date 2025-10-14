@@ -14,6 +14,8 @@
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: aliceblue;
 }
 
 img, picture, video, canvas, svg {

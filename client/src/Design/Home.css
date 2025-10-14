@@ -1,0 +1,9 @@
+h1 {
+    padding-left: 50px;
+}
+
+.homePage {
+    display: flex;
+    flex-direction: row;
+    
+}

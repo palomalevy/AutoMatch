@@ -1,15 +1,16 @@
 import { useState } from 'react'
+import { Routes, Route, Link } from "react-router-dom";
 import './App.css'
+import Home from './HomePage/Home.jsx'
+import Login from './LoginPage/Login.jsx'
 
 function App() {
 
   return (
-    <>
-      <h1>AutoMatch</h1>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   )
 }
 
