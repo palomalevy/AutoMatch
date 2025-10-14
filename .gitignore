@@ -11,6 +11,20 @@
 # production
 /build
 
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.env
+.venv/
+
+client/node_modules/
+client/dist/
+
+.DS_Store
+.vscode/
+
 # misc
 .DS_Store
 .env.local
