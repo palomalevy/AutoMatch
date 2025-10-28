@@ -13,6 +13,7 @@ const Feed = () => {
                     <p>Mileage: 30,000 miles</p>
                     <p>Price: $18,000</p>
                     <p>Location: Los Angeles, CA</p>
+                    <p>Similarity Score: </p>
                     <button className="viewButton">View Details</button>
                 </div>
             </div>
@@ -39,6 +40,27 @@ const Feed = () => {
                 </div>
             </div>
             
+            <div className="itemObject">
+                <img src="https://toppng.com/uploads/preview/techno-disney-cars-movie-disney-pixar-disney-wiki-disney-cars-11562993425a7t2mebpym.png" width={200}/>
+                <div className="itemDetails">
+                    <h3>2018 Toyota Camry</h3>
+                    <p>Mileage: 30,000 miles</p>
+                    <p>Price: $18,000</p>
+                    <p>Location: Los Angeles, CA</p>
+                    <button className="viewButton">View Details</button>
+                </div>
+            </div>
+
+            <div className="itemObject">
+                <img src="https://www.vhv.rs/dpng/d/526-5262969_clipart-cars-plan-disney-cars-movie-characters-hd.png" width={200}/>
+                <div className="itemDetails">
+                    <h3>2017 Ford Mustang</h3>
+                    <p>Mileage: 25,000 miles</p>
+                    <p>Price: $25,000</p>
+                    <p>Location: New York, NY</p>
+                    <button className="viewButton">View Details</button>
+                </div>
+            </div>
         </section>
     </section>
   )

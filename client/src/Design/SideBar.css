@@ -1,10 +1,30 @@
 .sidebar {
-    border: 1px solid #000000;
-    width: 15vw;
-    height: 90vh;
-    margin-left: 50px;
-    justify-content: center;
+  border: 1px solid #000;
+  width: 15vw;
+  height: 90vh;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-top: 1px solid #000;
+    border-left: none;
+    border-right: none;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    display: flex;
-    flex-direction: column;
+    background-color: white;
+    z-index: 1000;
+  }
 }
