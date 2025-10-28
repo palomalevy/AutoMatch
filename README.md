@@ -1,6 +1,7 @@
 # Get Started
 
 Follow to set up the backend locally.
+Files to edit are in backend/api/helper functions
 
 ---
 
