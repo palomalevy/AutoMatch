@@ -1,69 +1,75 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import '../Design/Feed.css'
+import getBrandLogo from '../Utils/GetBrandLogo.jsx';
+
+const API_BASE = "http://127.0.0.1:8000";
+const PAGE_SIZE = 15;
 
 const Feed = () => {
+    const [cars, setCars] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    async function fetchPage(pageNum) {
+        if (loading) return "Loading in progress";
+        setLoading(true);
+
+        try {
+            const res = await fetch(`${API_BASE}/api/listings/?page=${pageNum}&page_size=${PAGE_SIZE}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+
+            const newCars = Array.isArray(data.cars) ? data.cars : [];
+            setCars(prev => (pageNum === 1 ? newCars : [...prev, ...newCars]));
+            setHasMore(Boolean(data.hasMore));
+            setPage(pageNum + 1);
+        } catch (err) {
+            console.error("error fetching page:", err);
+        }
+
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchPage(1);
+    }, []);
+
   return (
     <section className="feedContainer">
         <h2>Recommended For You</h2>
         <section className="feedItems">
-            <div className="itemObject">
-                <img src="https://toppng.com/uploads/preview/techno-disney-cars-movie-disney-pixar-disney-wiki-disney-cars-11562993425a7t2mebpym.png" width={200}/>
-                <div className="itemDetails">
-                    <h3>2018 Toyota Camry</h3>
-                    <p>Mileage: 30,000 miles</p>
-                    <p>Price: $18,000</p>
-                    <p>Location: Los Angeles, CA</p>
-                    <p>Similarity Score: </p>
-                    <button className="viewButton">View Details</button>
-                </div>
-            </div>
-            
-            <div className="itemObject">
-                <img src="https://www.vhv.rs/dpng/d/526-5262969_clipart-cars-plan-disney-cars-movie-characters-hd.png" width={200}/>
-                <div className="itemDetails">
-                    <h3>2017 Ford Mustang</h3>
-                    <p>Mileage: 25,000 miles</p>
-                    <p>Price: $25,000</p>
-                    <p>Location: New York, NY</p>
-                    <button className="viewButton">View Details</button>
-                </div>
-            </div>
-            
-            <div className="itemObject">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoBLBU3Z0T5lgkWnXAS2cqBrvjuRdaW7rsBQ&s" width={200}/>
-                <div className="itemDetails">
-                    <h3>2016 BMW 3 Series</h3>
-                    <p>Mileage: 40,000 miles</p>
-                    <p>Price: $22,000</p>
-                    <p>Location: Chicago, IL</p>
-                    <button className="viewButton">View Details</button>
-                </div>
-            </div>
-            
-            <div className="itemObject">
-                <img src="https://toppng.com/uploads/preview/techno-disney-cars-movie-disney-pixar-disney-wiki-disney-cars-11562993425a7t2mebpym.png" width={200}/>
-                <div className="itemDetails">
-                    <h3>2018 Toyota Camry</h3>
-                    <p>Mileage: 30,000 miles</p>
-                    <p>Price: $18,000</p>
-                    <p>Location: Los Angeles, CA</p>
-                    <button className="viewButton">View Details</button>
-                </div>
-            </div>
+            {Array.isArray(cars) && cars.map((car, index) => {
+                const brand = (car.manufacturer || "").toLowerCase();
+                const year = Number(car.year) ?? "N/A";
+                const price = Number(car.price) ? `$${Number(car.price).toLocaleString()}` : "N/A";
 
-            <div className="itemObject">
-                <img src="https://www.vhv.rs/dpng/d/526-5262969_clipart-cars-plan-disney-cars-movie-characters-hd.png" width={200}/>
-                <div className="itemDetails">
-                    <h3>2017 Ford Mustang</h3>
-                    <p>Mileage: 25,000 miles</p>
-                    <p>Price: $25,000</p>
-                    <p>Location: New York, NY</p>
-                    <button className="viewButton">View Details</button>
-                </div>
-            </div>
+                return (
+                    <div className="itemObject" key={car.id ?? `${brand}-${year}-${index}`}>
+                    <img src={getBrandLogo(car.manufacturer)} alt="Image N/A" />
+                    <div className="itemDetails">
+                        <h3>{year} {brand ? brand[0].toUpperCase() + brand.slice(1) : "Unknown"}</h3>
+                        <p>Manufacturer: {brand || "Unknown"}</p>
+                        <p>Price: {price}</p>
+                        <p>Year: {year}</p>
+                        <button className="viewButton">View Details</button>
+                    </div>
+                    </div>
+                );
+            })}
+        </section>
+
+        <section className="paginationControls">
+            <button
+            className="loadMore"
+            onClick={() => fetchPage(page)}
+            disabled={loading || !hasMore}
+            >
+            {loading ? "Loading…" : hasMore ? "Load more" : "No more results"}
+            </button>
         </section>
     </section>
   )
 }
 
-export default Feed
+export default Feed;

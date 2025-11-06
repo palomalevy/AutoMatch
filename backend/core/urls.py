@@ -16,9 +16,8 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 urlpatterns = [
-    path("api/users", users_json),
-    path("api/cars", cars_proxy),
+    path("api/", include("api.urls")),
 ]
