@@ -18,7 +18,7 @@ const SideBar = () => {
 
   const activePrefs = Object.entries(user.preferences)
     .filter(([_, value]) => value === 1)
-    .map(([k]) => (<li key={k}>{k}</li>))
+    .map(([k]) => k);
 
   return (
     <section className="sidebar">

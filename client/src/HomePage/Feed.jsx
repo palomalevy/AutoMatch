@@ -3,7 +3,7 @@ import '../Design/Feed.css'
 import getBrandLogo from '../Utils/GetBrandLogo.jsx';
 
 const API_BASE = "http://127.0.0.1:8000";
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 12;
 
 const Feed = () => {
     const [cars, setCars] = useState([]);
@@ -16,7 +16,7 @@ const Feed = () => {
         setLoading(true);
 
         try {
-            const res = await fetch(`${API_BASE}/api/listings/?page=${pageNum}&page_size=${PAGE_SIZE}`);
+            const res = await fetch(`${API_BASE}/api/listings/?page=${pageNum}&pageSize=${PAGE_SIZE}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
 
@@ -24,9 +24,7 @@ const Feed = () => {
             setCars(prev => (pageNum === 1 ? newCars : [...prev, ...newCars]));
             setHasMore(Boolean(data.hasMore));
             setPage(pageNum + 1);
-        } catch (err) {
-            console.error("error fetching page:", err);
-        }
+        } catch (err) {}
 
         setLoading(false);
     }
@@ -39,17 +37,17 @@ const Feed = () => {
     <section className="feedContainer">
         <h2>Recommended For You</h2>
         <section className="feedItems">
-            {Array.isArray(cars) && cars.map((car, index) => {
-                const brand = (car.manufacturer || "").toLowerCase();
-                const year = Number(car.year) ?? "N/A";
-                const price = Number(car.price) ? `$${Number(car.price).toLocaleString()}` : "N/A";
+            {cars.map((car, index) => {
+                const brand = car.manufacturer.toLowerCase();
+                const year = Number(car.year);
+                const price = `$${Number(car.price).toLocaleString()}`;
 
                 return (
                     <div className="itemObject" key={car.id ?? `${brand}-${year}-${index}`}>
                     <img src={getBrandLogo(car.manufacturer)} alt="Image N/A" />
                     <div className="itemDetails">
-                        <h3>{year} {brand ? brand[0].toUpperCase() + brand.slice(1) : "Unknown"}</h3>
-                        <p>Manufacturer: {brand || "Unknown"}</p>
+                        <h3>{year} {brand[0].toUpperCase() + brand.slice(1)}</h3>
+                        <p>Manufacturer: {brand}</p>
                         <p>Price: {price}</p>
                         <p>Year: {year}</p>
                         <button className="viewButton">View Details</button>
@@ -60,12 +58,8 @@ const Feed = () => {
         </section>
 
         <section className="paginationControls">
-            <button
-            className="loadMore"
-            onClick={() => fetchPage(page)}
-            disabled={loading || !hasMore}
-            >
-            {loading ? "Loading…" : hasMore ? "Load more" : "No more results"}
+            <button className="loadMore" onClick={() => fetchPage(page)} disabled={loading || !hasMore}>
+                {loading ? "Loading…" : hasMore ? "Load more" : "No more results"}
             </button>
         </section>
     </section>
