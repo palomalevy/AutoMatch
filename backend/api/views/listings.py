@@ -16,8 +16,6 @@ _cacheReady = False
 _cachedListings = []   # all non-empty listings go here
 _total = 0
 
-print(f"Loaded {_total} usable listings into cache")
-
 # determines if a listing is empty/incomplete
 def isEmptyListing(listing):
     manufacturerName = (listing.get("manufacturer") or "").strip()
@@ -55,14 +53,6 @@ def _prepCache():
     _cachedListings = [l for l in listings if not isEmptyListing(l)]
     _total = len(_cachedListings)
     _cacheReady = True
-
-    emptyCount = sum(
-        1 for l in _cachedListings
-        if (l.get("manufacturer") == "" or int(l.get("year") or 0) <= 0)
-    )
-    
-    print(f"Usable listings: {_total}, truly empty after filter: {emptyCount}")
-
 
 # loads all listings from CSV
 def loadListings():
