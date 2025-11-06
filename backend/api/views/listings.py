@@ -20,10 +20,10 @@ _total = 0
 def isEmptyListing(listing):
     manufacturerName = (listing.get("manufacturer") or "").strip()
     year = int(listing.get("year") or 0)
-    return (manufacturerName == "Unknown" or year == 0)
+    return (manufacturerName == "" or year <= 0)
 
 def _rowToListing(row):
-    manufacturerName = (row.get("manufacturer") or "").strip()
+    manufacturerName = (row.get("manufacturer") or row.get("make") or "").strip().lower()
     priceStr = (row.get("price") or "").replace(",", "").strip()
     yearStr  = (row.get("year") or "").strip()
 
@@ -53,7 +53,6 @@ def _prepCache():
     _cachedListings = [l for l in listings if not isEmptyListing(l)]
     _total = len(_cachedListings)
     _cacheReady = True
-
 
 # loads all listings from CSV
 def loadListings():
