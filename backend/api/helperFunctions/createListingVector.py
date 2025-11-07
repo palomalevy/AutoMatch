@@ -35,6 +35,6 @@ def createListingVector(listing):
         if feature in extraFeatures:
             vector.append(extraFeatures[feature])
         else:
-            vector.append(1 if feature == formattedBrand else 0)
+            vector.append(1 if feature == brand else 0)
 
     return vector
