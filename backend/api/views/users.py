@@ -2,7 +2,6 @@ import csv, json
 from django.shortcuts import render
 from django.http import JsonResponse
 from pathlib import Path
-def ping(request): return JsonResponse({"ok": True})
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DATA_JSON = BASE_DIR / "data" / "users.json"
