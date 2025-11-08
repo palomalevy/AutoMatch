@@ -3,11 +3,10 @@ from .cache import prepCache, getIds
 from .createUserVector import createUserVector
 from .cosineSimilarity import cosineSimilarity
 
-def scoreListings(user):
+def scoreListingsCosine(user):
     prepCache()
     
-    preferences = user.get("preferences")
-    userVec = createUserVector(preferences).astype(np.float32)
+    userVec = np.asarray(createUserVector(user), dtype=np.float32)
 
     scores = cosineSimilarity(userVec)
 

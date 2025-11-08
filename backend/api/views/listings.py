@@ -3,6 +3,8 @@ from pathlib import Path
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ..helperFunctions.cache import prepCache, loadListings, getTotal
+from ..helperFunctions.scoreListingsCosine import scoreListingsCosine
+from django.views.decorators.csrf import csrf_exempt
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -58,3 +60,14 @@ def listingDetail(request, listing_id):
             "received": body,
             "stored_listing": listing
         })
+
+@csrf_exempt
+def cosineScoredListings(request):
+    body = json.loads(request.body or "{}")
+    user = body["user"]
+
+    scores = scoreListingsCosine(user)
+
+    sortedScores = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
+
+    return JsonResponse({"scores": sortedScores})

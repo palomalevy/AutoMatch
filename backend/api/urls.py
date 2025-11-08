@@ -6,4 +6,5 @@ urlpatterns = [
     path("users/<int:user_id>/", users.userDetail),
     path("listings/", listings.listingList),
     path("listings/<int:listing_id>/", listings.listingDetail),
+    path("feed/cosine/", listings.cosineScoredListings),
 ]
