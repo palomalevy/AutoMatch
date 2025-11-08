@@ -1,6 +1,6 @@
 import numpy as np
 from .features import FEATURE_ORDER
-from .cache import prepCache, getCosineMatrix, getIds, getListings
+from .cache import getCosineMatrix
 from .createUserVector import createUserVector
 
 # use cosine similarity to compare vectors and assign scores
@@ -23,12 +23,12 @@ def featureWeights(userVec):
 
     
 # computes scores for all car listings
-def cosineSimilarity(userVector):
+def cosineSimilarity(itemVec):
     X = getCosineMatrix()
     userVec = applyGroupWeights(userVec)
     normUserVec = normalizeVector(userVec)
     scores = np.dot(X, normUserVec)
 
     return scores
-    
+
 
