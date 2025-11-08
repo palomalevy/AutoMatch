@@ -1,22 +1,34 @@
 import numpy as np
-# use cosine similarity to compare vectors
+from .features import FEATURE_ORDER
+from .cache import prepCache, getCosineMatrix, getIds, getListings
+from .createUserVector import createUserVector
 
-def calculate_cosine_similarity(vec_a, vec_b):
-    #Calculates de cosine similarity between two non-zero vectors
+# use cosine similarity to compare vectors and assign scores
+# normalizes user vector
+def normalizeUsereVector(userVec):
+    norm = np.linalg.norm(userVec)
+    return userVec / norm if norm > 0 else userVec
 
-    #first convert both vectors to numpy
-    vec_a = np.asarray(vec_a)
-    vec_b = np.asarray(vec_b)
+# adds weights to certain feature groups
+def featureWeights(userVec):
+    weightedVec = userVec.copy()
+    
+    yearWeight = 1.5
+    brandWeight = 2
 
-    #calculate the dot product
-    dot_product = np.dot(vec_a, vec_b)
+    weightedVec[3:6] *= yearWeight
+    weightedVec[6:] *= brandWeight
 
-    #calculate the magnitudes
-    mag_a = np.linalg.norm(vec_a)
-    mag_b = np.linalg.norm(vec_b)
+    return weightedVec
 
-    #calculate similarity (check to avoid division by zero)
-    if mag_a == 0 or mag_b == 0:
-        return 0.0
-    else:
-        return dot_product/(mag_a * mag_b)
+    
+# computes scores for all car listings
+def cosineSimilarity(userVector):
+    X = getCosineMatrix()
+    userVec = applyGroupWeights(userVec)
+    normUserVec = normalizeVector(userVec)
+    scores = np.dot(X, normUserVec)
+
+    return scores
+    
+
