@@ -23,7 +23,7 @@ def featureWeights(userVec):
 
     
 # computes scores for all car listings
-def cosineSimilarity(itemVec):
+def cosineSimilarity(userVec):
     X = getCosineMatrix()
     userVec = applyGroupWeights(userVec)
     normUserVec = normalizeVector(userVec)
