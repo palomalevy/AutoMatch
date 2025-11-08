@@ -5,7 +5,7 @@ from .createUserVector import createUserVector
 
 # use cosine similarity to compare vectors and assign scores
 # normalizes user vector
-def normalizeUsereVector(userVec):
+def normalizeUserVector(userVec):
     norm = np.linalg.norm(userVec)
     return userVec / norm if norm > 0 else userVec
 
@@ -23,10 +23,10 @@ def featureWeights(userVec):
 
     
 # computes scores for all car listings
-def cosineSimilarity(itemVec):
+def cosineSimilarity(userVec):
     X = getCosineMatrix()
-    userVec = applyGroupWeights(userVec)
-    normUserVec = normalizeVector(userVec)
+    userVec = featureWeights(userVec)
+    normUserVec = normalizeUserVector(userVec)
     scores = np.dot(X, normUserVec)
 
     return scores
